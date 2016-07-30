@@ -95,6 +95,9 @@
 <script>
     $(document).ready(Cargar);
     function Cargar(){
+       $('#here_table').empty();
+       var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
+       $('#here_table').append(table);
        $.ajax({
            url:"../BackEnd/Back.php",
            type:'post',
@@ -106,14 +109,14 @@
                //console.log(data);
                data=JSON.parse(data);
                for (var i in data){
-                   $('#here_table').empty();
-                   var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
                    for(i=0; i<data.length; i++){
                        table.append('<tr><td>'+data[i].CodigoArticulo+'</td><td>'+data[i].Nombre+'</td><td>'+data[i].PrecioVenta+'</td><td>'+data[i].PrecioFabrica+'</td><td>'+data[i].NombreProveedor+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoArticulo+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoArticulo+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                       $('#here_table').append(table);
                    }
-                   $('#here_table').append(table);
+
                }
            }
+
        });
     };
 
