@@ -21,12 +21,6 @@ class Articulos extends conec
         return $art;
     }
 
-    public function get_provedor(){
-        $result = $this->_db->query('SELECT * FROM proveedor');
-        $art = $result->fetch_all(MYSQLI_ASSOC);
-        return $art;
-    }
-
     public function get_articulos_por_ID($id)
     {
         $result = $this->_db->query("SELECT * FROM Articulo where CodigoArticulo='".$id."'");

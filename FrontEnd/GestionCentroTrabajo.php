@@ -10,10 +10,15 @@
         <br>
         <h5 class="center">Gestion Centro de Trabajo</h5>
         <br><hr><br>
-        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">+</i></a>
+        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">add</i></a>
     </div>
 </div>
-
+<div class="row">
+    <div class="col l10 offset-l1 m12 s12">
+        <div id="Tabla">
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal para dar de alta y editar -->
@@ -27,8 +32,7 @@
                     <label for="Nombre_label">Nombre</label>
                 </div>
             </div>
-
-                        <div class="row">
+            <div class="row">
                 <div class="input-field col s12">
                     <select required id="Poblacion_label">
                         <option value=null disabled selected>Seleccione</option>
@@ -92,39 +96,6 @@
         </form>
     </div>
 </div>
-
-
-
-
-
-<div class="row">
-    <div class="col l10 offset-l1 m12 s12">
-        <table class="striped">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Poblacion</th>
-                <th>Direccion</th>
-                <th>Director</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <input type="checkbox" id="test5"/>
-                </td>
-                <td>Codigo</td>
-                <td>Nombre</td>
-                <td>Poblacion</td>
-                <td>Direccion</td>
-                <td>Director</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
 <script>
     $(document).ready(function() {
         $('select').material_select();
@@ -133,4 +104,36 @@
             dismissible: true
         }
     );
+
+    /* Para la carga de la tabla*/
+    $(document).ready(Cargar);
+    function Cargar(){
+        $.ajax({
+            url:"../BackEnd/Back.php",
+            type:'post',
+            data:({
+                action:"CentroTrabajo",
+                Metodo: "GetCdt"
+            }),
+            success: function (data) {
+                data=JSON.parse(data);
+                /*if(data.length!=0){
+                    for (var i in data){
+                        $('#Tabla').empty();
+                        var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
+                        for(i=0; i<data.length; i++){
+                            table.append('<tr><td>'+data[i].CodigoArticulo+'</td><td>'+data[i].Nombre+'</td><td>'+data[i].PrecioVenta+'</td><td>'+data[i].PrecioFabrica+'</td><td>'+data[i].NombreProveedor+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoArticulo+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoArticulo+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                        }
+                        $('#Tabla').append(table);
+                    }
+                }
+                else{
+                    $('#Tabla').empty();
+                    var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
+                    $('#Tabla').append(table);
+                }*/
+                console.log(data);
+            }
+        });
+    };
 </script>

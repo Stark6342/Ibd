@@ -6,6 +6,7 @@
  * Time: 08:42 PM
  */
 require_once "Articulos.php";
+require_once "CentrosDeTrabajo.php";
 switch ($_POST['action']){
     case "articulos":
         switch ($_POST['Metodo']) {
@@ -52,5 +53,18 @@ switch ($_POST['action']){
                 unset($art);
                 break;
         }
-    break;
+        break;
+    case "CentroTrabajo":
+        switch ($_POST['Metodo']){
+            Case "Alta":
+                $cdt =new CentrosDeTrabajo();
+                $ok=$cdt->Alta();
+                Break;
+            case "GetCdt":
+                $cdt=new CentrosDeTrabajo();
+                $ok=json_encode($cdt->get_CentrosDeTraajo());
+                echo $ok;
+                unset($cdt);
+                break;
+        }
 }
