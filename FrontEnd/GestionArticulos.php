@@ -10,8 +10,7 @@
     <title>Gestion de articulos</title>
     <meta charset="utf-8" />
 </head>
-<!--PArte prinsipal de la pagina Muestra botones y tabla
--->
+<!--PArte prinsipal de la pagina Muestra botones y tabla-->
 <div class="row">
     <div class="col l10 offset-l1 m12 s12">
         <br>

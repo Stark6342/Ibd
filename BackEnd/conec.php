@@ -7,8 +7,8 @@
  */
 
 define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','');
+define('DB_USER','ibduser');
+define('DB_PASS','ibdMaster123');
 define('DB_NAME','ProyectoBaseDatos');
 define('DB_CHARSET','utf-8');
 
