@@ -10,6 +10,7 @@ class Proveedores extends conec
 {
     public function __construct(){
         parent::__construct();
+        //Hola
     }
 
 }
