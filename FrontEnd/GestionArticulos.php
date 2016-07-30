@@ -33,7 +33,7 @@
     <div class="modal-content">
         <form>
             <h4>Baja Arciculo</h4>
-            <p class="center">Esta seguro que desea eliminarlo?</p>
+            <p class="center">¿Desea eliminar el registro?</p>
             <div>
                 <input id="idEliminar" type="text" value="" hidden>
             </div>
