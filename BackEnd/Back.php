@@ -121,4 +121,149 @@ switch ($_POST['action']){
 
         }
         break;
+
+           case "Departamento":
+        switch ($_POST['Metodo']){
+            case "GetDepartamentosPorId":
+                $depa = new Departamento();
+                $ok=json_encode($depa->Get_Departamento_por_ID($_POST['id']));
+                echo $ok;
+                unset($depa);
+                break;
+            case "GetDepartamentos":
+                $depa = new Departamento();
+                $ok=json_encode($depa->get_departamento());
+                echo $ok;
+                unset($depa);
+                break;
+            case "Alta":
+                $depa=new Departamento();
+                $ok=$depa->Alta($_POST['atributos']);
+                echo $ok;
+                unset($depa);
+                break;
+            case "Baja":
+                $depa=new Departamento();
+                $ok=$depa->Baja($_POST['id']);
+                echo $ok;
+                unset($depa);
+                break;
+            case "Cambio":
+                $depa=new Departamento();
+                $ok=$depa->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($depa);
+                break;
+
+        }
+        break;
+
+
+           case "Empleado":
+        switch ($_POST['Metodo']){
+            case "GetEmpleadosPorId":
+                $empl = new Empleados();
+                $ok=json_encode($empl->Get_empleado_por_ID($_POST['id']));
+                echo $ok;
+                unset($empl);
+                break;
+            case "GetEmpleados":
+                $empl = new Empleados();
+                $ok=json_encode($empl->get_empleado());
+                echo $ok;
+                unset($empl);
+                break;
+            case "Alta":
+                $empl=new Empleados();
+                $ok=$empl->Alta($_POST['atributos']);
+                echo $ok;
+                unset($empl);
+                break;
+            case "Baja":
+                $empl=new Empleados();
+                $ok=$empl->Baja($_POST['id']);
+                echo $ok;
+                unset($empl);
+                break;
+            case "Cambio":
+                $empl=new Empleados();
+                $ok=$empl->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($empl);
+                break;
+
+        }
+        break;
+
+         case "Proveedor":
+        switch ($_POST['Metodo']){
+            case "GetProveedoresPorId":
+                $prov = new Proveedores();
+                $ok=json_encode($prov->Get_proveedor_por_ID($_POST['id']));
+                echo $ok;
+                unset($prov);
+                break;
+            case "GetProveedores":
+                $prov = new Proveedores();
+                $ok=json_encode($prov->get_proveedor());
+                echo $ok;
+                unset($prov);
+                break;
+            case "Alta":
+                $prov=new Proveedores();
+                $ok=$prov->Alta($_POST['atributos']);
+                echo $ok;
+                unset($prov);
+                break;
+            case "Baja":
+                $prov=new Proveedores();
+                $ok=$prov->Baja($_POST['id']);
+                echo $ok;
+                unset($prov);
+                break;
+            case "Cambio":
+                $prov=new Proveedores();
+                $ok=$prov->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($prov);
+                break;
+
+        }
+        break;
+
+         case "Pedido":
+        switch ($_POST['Metodo']){
+            case "GetPedidosPorId":
+                $pedi = new Pedidos();
+                $ok=json_encode($pedi->Get_Pedido_por_ID($_POST['id']));
+                echo $ok;
+                unset($pedi);
+                break;
+            case "GetPedidos":
+                $pedi = new Pedidos();
+                $ok=json_encode($pedi->get_pedido());
+                echo $ok;
+                unset($pedi);
+                break;
+            case "Alta":
+                $pedi=new Pedidos();
+                $ok=$pedi->Alta($_POST['atributos']);
+                echo $ok;
+                unset($pedi);
+                break;
+            case "Baja":
+                $pedi=new Pedidos();
+                $ok=$pedi->Baja($_POST['id']);
+                echo $ok;
+                unset($pedi);
+                break;
+            case "Cambio":
+                $pedi=new Pedidos();
+                $ok=$pedi->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($pedi);
+                break;
+
+        }
+        break;
 }
