@@ -1,5 +1,9 @@
 ﻿<?php
     require_once "imports2.php";
+    require_once "../BackEnd/CargaSelect.php";
+
+    $pobla=new CargaSelect();
+    $_pop=$pobla->get_poblacion();
 ?>
 <head>
     <title>Gestion Centro de Trabajo</title>
@@ -26,6 +30,9 @@
     <div class="modal-content">
         <form id="AltaCDT">
             <h4>Alta Centro de trabajo</h4>
+            <div>
+                <input id="idCambio" type="text" value="" hidden>
+            </div>
             <div class="row">
                 <div class="input-field col s12">
                     <input placeholder="Nombre" id="Nombre_label" type="text" class="validate" required>
@@ -35,10 +42,12 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select required id="Poblacion_label">
-                        <option value=null disabled selected>Seleccione</option>
-                        <option value="1">Poblacion 1</option>
-                        <option value="2">Poblacion 2</option>
-                        <option value="3">Poblacion 3</option>
+                        <option value=null disabled selected>Elije Poblacion</option>
+                        <?php
+                        foreach ($_pop as $row){
+                            echo '<option value="'.$row['idpoblacion'].'">'.$row['nombre'].'</option>';
+                        }
+                        ?>
                     </select>
                     <label>Poblacion</label>
                 </div>
@@ -88,14 +97,19 @@
     <div class="modal-content">
         <form>
             <h4>Baja Centro de Trabajo</h4>
+            <div>
+                <input id="idEliminar" type="text" value="" hidden>
+            </div>
             <p class="center">¿Desea eliminar el registro?</p>
             <div class="modal-footer center">
                 <a class="modal-action modal-close waves-effect red white-text btn-flat ">Cancelar</a>
-                <button id="Baja" class="modal-action waves-effect green white-text btn-flat">Aceptar</button>
+                <button id="BAja" class="modal-action waves-effect green white-text btn-flat">Aceptar</button>
             </div>
         </form>
     </div>
 </div>
+
+
 <script>
     $(document).ready(function() {
         $('select').material_select();
@@ -104,6 +118,15 @@
             dismissible: true
         }
     );
+    $('.modal-trigger2').leanModal({
+            dismissible: true
+        }
+    );
+    function elementos(clicked_id) {
+        //console.log(clicked_id);
+        $('#baja').openModal();
+        $('#idEliminar').attr("value",clicked_id);
+    }
 
     /* Para la carga de la tabla*/
     $(document).ready(Cargar);
@@ -117,23 +140,125 @@
             }),
             success: function (data) {
                 data=JSON.parse(data);
-                /*if(data.length!=0){
-                    for (var i in data){
-                        $('#Tabla').empty();
-                        var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
-                        for(i=0; i<data.length; i++){
-                            table.append('<tr><td>'+data[i].CodigoArticulo+'</td><td>'+data[i].Nombre+'</td><td>'+data[i].PrecioVenta+'</td><td>'+data[i].PrecioFabrica+'</td><td>'+data[i].NombreProveedor+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoArticulo+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoArticulo+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
-                        }
-                        $('#Tabla').append(table);
+                if(data.length!=0){
+                    $('#Tabla').empty();
+                    var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th> <th>Nombre</th> <th>Poblacion</th><th>Direccion</th> <th>Director</th><th class="center">Acciones</th></tr></thead></table>');
+                    for(i=0; i<data.length; i++){
+                        table.append('<tr><td>'+data[i].CodigoCDT+'</td><td>'+data[i].NombreCDT+'</td><td>'+data[i].nombrepoblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].Director+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoCDT+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoCDT+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                     }
+                    $('#Tabla').append(table);
+
                 }
                 else{
                     $('#Tabla').empty();
                     var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
                     $('#Tabla').append(table);
-                }*/
-                console.log(data);
+                }
             }
         });
     };
+
+    //funcion para dar de baja
+    $(function () {
+        $('#BAja').click(function () {
+            event.preventDefault();
+            var id = $('#idEliminar').val();
+            $.ajax({
+                url:"../BackEnd/Back.php",
+                type:'post',
+                data:({
+                    action:"CentroTrabajo",
+                    Metodo: "Baja",
+                    id: id
+                }),
+                success: function (data) {
+                    console.log(data);
+                    if(data==1){
+                        Materialize.toast('Se Elimino con Exito', 4000,"green");
+                        $('#baja').closeModal();
+                    }
+                    else
+                        Materialize.toast('Error al Eliminar', 4000,"red");
+                    Cargar();
+                }
+            });
+        });
+    });
+
+
+    //Funcion para enviar y editar
+    $(function (){
+        $('#Enviar').click(function () {
+            var id=$('#idCambio').val();
+            event.preventDefault();
+            var nombre=$('#Nombre_label').val();
+            var pv_label=$('#pv_label').val();
+            var pf_label=$('#pf_label').val();
+            var Proveedor_label=$('#Proveedor_label').val();
+            if(id!=""){
+                $.ajax({
+                    url:"../BackEnd/Back.php",
+                    type:'post',
+                    data:({
+                        action:"articulos",
+                        Metodo: "Cambio",
+                        atributos:{
+                            id:id,
+                            n:nombre,
+                            p1:pv_label,
+                            p2:pf_label,
+                            p3:Proveedor_label
+                        }
+                    }),
+                    success: function(data) {
+                        //    console.log(data);
+                        if(data=="1"){
+                            Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
+                            $('#idCambio').val("");
+                            $('#Nombre_label').val("");
+                            $('#pv_label').val("");
+                            $('#pf_label').val("");
+                            $('#alta').closeModal();
+                        }
+                        else if(data=="0")
+                            Materialize.toast('Error al Insertar', 4000,"red");
+                        else
+                            Materialize.toast('Faltan Campos por llenar', 4000,"yellow");
+                        Cargar();
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    url:"../BackEnd/Back.php",
+                    type:'post',
+                    data:({
+                        action:"articulos",
+                        Metodo: "alta",
+                        atributos:{
+                            n:nombre,
+                            p1:pv_label,
+                            p2:pf_label,
+                            p3:Proveedor_label
+                        }
+                    }),
+                    success: function(data) {
+                        //      console.log(data);
+                        if(data=="1"){
+                            Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
+                            $('#Nombre_label').val("");
+                            $('#pv_label').val("");
+                            $('#pf_label').val("");
+                            $('#alta').closeModal();
+                        }
+                        else if(data=="0")
+                            Materialize.toast('Error al Insertar', 4000,"red");
+                        else
+                            Materialize.toast('Faltan Campos por llenar', 4000,"yellow");
+                        Cargar();
+                    }
+                });
+            };
+        });
+    });
 </script>

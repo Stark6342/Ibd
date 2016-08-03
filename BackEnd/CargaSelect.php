@@ -17,4 +17,10 @@ class CargaSelect extends conec
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
+
+    public function get_poblacion(){
+        $result = $this->_db->query('SELECT * FROM poblacion;');
+        $art = $result->fetch_all(MYSQLI_ASSOC);
+        return $art;
+    }
 }

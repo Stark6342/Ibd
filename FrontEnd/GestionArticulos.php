@@ -1,8 +1,8 @@
 ﻿<?php
     require_once "imports2.php";
     require_once "../BackEnd/CargaSelect.php";
-    $pro =new CargaSelect();
-    $_pro=$pro->get_provedor();
+    $Articulos =new CargaSelect();
+    $_pro=$Articulos->get_provedor();
 ?>
 <head>
     <title>Gestion de articulos</title>
@@ -223,7 +223,7 @@
                 success: function(data) {
                 //    console.log(data);
                     if(data=="1"){
-                        Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
+                        Materialize.toast('Se Actualizo con Exito', 4000,"green");
                         $('#idCambio').val("");
                         $('#Nombre_label').val("");
                         $('#pv_label').val("");
@@ -255,7 +255,7 @@
                     success: function(data) {
                   //      console.log(data);
                         if(data=="1"){
-                            Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
+                            Materialize.toast('Se Inserto con Exito', 4000,"green");
                             $('#Nombre_label').val("");
                             $('#pv_label').val("");
                             $('#pf_label').val("");
@@ -271,7 +271,6 @@
 
                 });
             };
-
         });
     });
 </script>

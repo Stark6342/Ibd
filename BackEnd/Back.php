@@ -7,6 +7,13 @@
  */
 require_once "Articulos.php";
 require_once "CentrosDeTrabajo.php";
+require_once "Clientes.php";
+require_once "Departamento.php";
+require_once "Empleados.php";
+require_once "Pedidos.php";
+require_once "Proveedores.php";
+
+
 switch ($_POST['action']){
     case "articulos":
         switch ($_POST['Metodo']) {
@@ -58,7 +65,18 @@ switch ($_POST['action']){
         switch ($_POST['Metodo']){
             Case "Alta":
                 $cdt =new CentrosDeTrabajo();
-                $ok=$cdt->Alta();
+                $res=$cdt->Alta($_POST['atributos']);
+                echo $res;
+                Break;
+            Case "Cambio":
+                $cdt =new CentrosDeTrabajo();
+                $res=$cdt->Cambio($_POST['atributos']);
+                echo $res;
+                Break;
+            Case "Baja":
+                $cdt =new CentrosDeTrabajo();
+                $res=$cdt->Baja($_POST['id']);
+                echo $res;
                 Break;
             case "GetCdt":
                 $cdt=new CentrosDeTrabajo();
@@ -67,4 +85,40 @@ switch ($_POST['action']){
                 unset($cdt);
                 break;
         }
+        break;
+    case "Cliente":
+        switch ($_POST['Metodo']){
+            case "Registro":
+                $cli = new Clientes();
+                $ok=json_encode($cli->Get_Cl_por_ID($_POST['id']));
+                echo $ok;
+                unset($cli);
+                break;
+            case "CargaTabla":
+                $cli = new Clientes();
+                $ok=json_encode($cli->get_client());
+                echo $ok;
+                unset($cli);
+                break;
+            case "Alta":
+                $cli=new Clientes();
+                $ok=$cli->Alta($_POST['atributos']);
+                echo $ok;
+                unset($cli);
+                break;
+            case "Baja":
+                $cli=new Clientes();
+                $ok=$cli->Baja($_POST['id']);
+                echo $ok;
+                unset($cli);
+                break;
+            case "Cambio":
+                $cli=new Clientes();
+                $ok=$cli->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($cli);
+                break;
+
+        }
+        break;
 }

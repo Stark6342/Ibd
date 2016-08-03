@@ -22,4 +22,16 @@ class CentrosDeTrabajo extends conec
 
     }
 
+    public function Cambio(){
+
+    }
+
+    public function Baja($ok){
+        $result = $this->_db->query("call EliminarCentroDeTrabajo(".$ok.")");
+        return $result;
+        //call ProyectoBaseDatos.EliminarCentroDeTrabajo(1);
+    }
+
+
+
 }
