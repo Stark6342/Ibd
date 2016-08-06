@@ -1,4 +1,5 @@
 ﻿<?php
+    include "BarNav.php";
     require_once "imports2.php";
 ?>
 <head>

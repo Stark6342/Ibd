@@ -1,4 +1,5 @@
 ﻿<?php
+    include "BarNav.php";
     require_once "imports2.php";
     require_once "../BackEnd/CargaSelect.php";
     $Articulos =new CargaSelect();
@@ -221,7 +222,7 @@
                     }
                 }),
                 success: function(data) {
-                //    console.log(data);
+                   console.log(data);
                     if(data=="1"){
                         Materialize.toast('Se Actualizo con Exito', 4000,"green");
                         $('#idCambio').val("");

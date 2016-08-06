@@ -12,22 +12,23 @@
         <h5 class="center">Login</h5>
         <br><hr><br>
 
-        <form id="login">
+        <form action="BackEnd/Login.php" id="login">
             <div class="row">
                 <div class="input-field col offset-m4 s4">
-                    <input placeholder="Usuario" id="first_name" type="text" class="validate center" required>
+                    <input placeholder="Usuario" name="username" id="username" type="text" class="validate center" required>
                     <label for="first_name">Usuario</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col offset-m4 s4">
-                    <input placeholder="Contraseña" id="password" type="password" class="center validate" required>
+                    <input placeholder="Contraseña"name="password" id="password" type="password" class="center validate" required>
                     <label for="password">Contraseña</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 center-align">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">Aceptar</button>
+
+                   <button class="btn waves-effect waves-light" type="submit" >Aceptar</button>
                     <button class="btn red" type="submit" name="action">Cancelar</button>
                 </div>
             </div>

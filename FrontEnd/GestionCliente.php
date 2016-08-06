@@ -1,8 +1,18 @@
 ﻿<?php
+    session_start();
+    if(!isset($_SESSION["Validado"])) {
+            header("location:../");
+    }
+    else {
+    if($_SESSION['Validado']=="aceptado"){
+    echo $_SESSION['Validado'];
+        include "BarNav.php";
     require_once "imports2.php";
     require_once "../BackEnd/CargaSelect.php";
     $pobla=new CargaSelect();
     $_pop=$pobla->get_poblacion();
+
+
 ?>
 <head>
     <title>Gestion de Clientes</title>
@@ -406,25 +416,7 @@
     });
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php } else {
+    echo "No Ha iniciado Secion";
+}
+    } ?>
