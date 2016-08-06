@@ -27,7 +27,7 @@ class Pedidos extends conec
 
     public function Alta($ok){
         $result = $this->_db->query("call addpedido(".$ok['d1'].",".$ok['d2'].",'".$ok['d3']."','".$ok['d4']."',".$ok['d5'].",".$ok['d6'].")");
-        return $result;
+             return $result;
     }
 
     public function Cambio($ok){

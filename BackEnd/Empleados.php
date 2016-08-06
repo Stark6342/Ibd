@@ -12,14 +12,21 @@ class Empleados extends conec
         parent::__construct();
     }
 
-  public function get_empleado(){
-        $result = $this->_db->query('SELECT * FROM empleadosvista');
+  public function get_empleadoSin(){
+        $result = $this->_db->query('SELECT * FROM empleadosvistasindepartamento');
+        $art = $result->fetch_all(MYSQLI_ASSOC);
+        return $art;
+    }
+  public function get_empleadoCon(){
+        $result = $this->_db->query('SELECT * FROM empleadosvistacondepartamento');
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
 
+
+
     public function Get_empleado_por_ID($id){
-        $result = $this->_db->query("SELECT * FROM empleadosvista where codigoempleado=".$id.";");
+        $result = $this->_db->query("SELECT * FROM empleadosvistasindepartamento where codigoempleado=".$id.";");
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
