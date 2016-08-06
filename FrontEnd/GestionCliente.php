@@ -5,7 +5,6 @@
     }
     else {
     if($_SESSION['Validado']=="aceptado"){
-    echo $_SESSION['Validado'];
         include "BarNav.php";
     require_once "imports2.php";
     require_once "../BackEnd/CargaSelect.php";
@@ -416,7 +415,4 @@
     });
 
 </script>
-<?php } else {
-    echo "No Ha iniciado Secion";
-}
-    } ?>
+<?php } } ?>

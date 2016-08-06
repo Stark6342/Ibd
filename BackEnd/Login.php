@@ -4,18 +4,16 @@
  * Created by PhpStorm.
  * User: beta
  * Date: 6/08/16
- * Time: 10:54 AM
+ * Time: 12:13 PM
  */
-
-define('DB_HOST','localhost');
-define('DB_USER','ibduser');
-define('DB_PASS','ibdMaster123');
-define('DB_NAME','ProyectoBaseDatos');
-
-$ok=new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-$arael=$ok->query("call login('admin','admin')");
-if ( $ok->connect_errno )
-{
-    echo "Fallo al conectar a MySQL: ". $ok->connect_error;
+include_once "conec.php";
+class Login extends conec{
+    public function __construct(){
+        parent::__construct();
+    }
+    public function login($u,$p){
+        $ok=$this->_db->query("call login('".$u."','".$p."')");
+        $art = $ok->fetch_all(MYSQLI_ASSOC);
+        return $art;
+    }
 }
-//echo $arael."Hola";

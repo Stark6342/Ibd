@@ -12,7 +12,7 @@
         <h5 class="center">Login</h5>
         <br><hr><br>
 
-        <form action="BackEnd/Login.php" id="login">
+        <form action="login.php" id="login">
             <div class="row">
                 <div class="input-field col offset-m4 s4">
                     <input placeholder="Usuario" name="username" id="username" type="text" class="validate center" required>
