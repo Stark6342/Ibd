@@ -48,7 +48,8 @@ create table empleado (
     foreign key (idsexo) references sexo(idsexo)   on delete cascade,
     foreign key (idpoblacion) references poblacion(idpoblacion)   on delete cascade
     );
-
+    
+ 
 
 
 
@@ -69,7 +70,6 @@ create table hijo (
     foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade
     );
 
- 
 
 create table centrodetrabajo (
     codigocdt               int primary key auto_increment,
@@ -116,6 +116,12 @@ create table empleadohabilidad(
     foreign key (codigohabilidad) references habilidad(codigohabilidad)  on delete cascade
 );
 
+create table personaempresa(
+tipocliente varchar(50),
+idtipocliente int primary key
+);
+    insert into personaempresa (idtipocliente,tipocliente) values(1,'Persona'),(2,'Empresa');
+
 
 create table cliente (
     codigocliente           int primary key auto_increment,
@@ -130,10 +136,11 @@ create table cliente (
     teléfono                varchar(50), 
     saldo                   float,
     límitecrédito           float,
-    personaempresa          bool,
+    idtipocliente          int,
 
     foreign key (idsexo) references sexo(idsexo)  on delete cascade,
-    foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade
+    foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade,
+    foreign key (idtipocliente) references personaempresa(idtipocliente)
 );
 
 
@@ -150,6 +157,9 @@ create table cliente (
     foreign key (codigocliente) references cliente(codigocliente)  on delete cascade
     );
     
+    
+   
+    
 create table tipoproveedores (
 idtipo int primary key ,
 tipo varchar(50)
@@ -165,9 +175,16 @@ drop table if exists proveedor;
     alternativo             int ,-- tipoproveedor
     foreign key (alternativo) references tipoproveedores(idtipo)
     );
-    
-
-
+  
+  drop table if exists respaldo;
+create table respaldo (
+nombreanterior varchar(50),
+nombrenuevo	   varchar(50),
+fechacambio date
+);
+create trigger pararespaldo after update on proveedor
+for each row
+insert into respaldo values(old.nombreproveedor,new.nombreproveedor,curdate());
 
     create table articulo(
     codigoarticulo          varchar(4) primary key,
@@ -206,6 +223,29 @@ drop table if exists proveedor;
 
 
 -- **********************vistas*******************************
+ create view direccionesvista as
+    
+    select de.codigodireccion,de.colonia,de.calle,de.numero,
+		    po.nombre,concat(cl.nombrecliente,' ',cl.apellidopcliente,' ',cl.apellidomcliente) as nombrecl
+    from direccionenvio de
+    inner join poblacion po on po.idpoblacion=de.idpoblacion
+    inner join cliente cl on cl.codigocliente=de.codigocliente;
+
+
+   create view empeladoselect as
+    select codigoempleado,concat(nombreempleado,' ',apellidopempleado,' ',apellidomempleado) as nombre
+    from empleado;
+
+
+drop view if exists hijovista;
+create view hijovista as 
+ select hi.codigohijo,hi.nombrehijo,hi.apellidophijo,hi.apellidomhijo ,
+		hi.colonia, hi.calle,hi.numero,hi.fechanacimiento,se.sexo,po.nombre,em.nombreempleado,
+        em.apellidopempleado,em.apellidomempleado
+ from hijo hi
+ inner join sexo  se on se.idsexo=hi.idsexo
+ inner join poblacion po on po.idpoblacion=hi.idpoblacion
+ inner join empleado em on em.codigoempleado=hi.codigoempleado;
 
 
 
@@ -259,21 +299,24 @@ VIEW `ClienteVista` AS
                 `cl`.`Numero`) AS `Direccion`,
         `cl`.`teléfono` AS `Telefono`,
         `cl`.`saldo` AS `Saldo`,
-        `cl`.`PersonaEmpresa` AS `Empresa`
+        `pe`.`tipocliente` AS `Empresa`
     FROM
         ((`Cliente` `cl`
         JOIN `Sexo` `se` ON ((`se`.`idSexo` = `cl`.`idSexo`)))
-        JOIN `poblacion` `po` ON ((`po`.`idpoblacion` = `cl`.`idpoblacion`)));
+        JOIN `poblacion` `po` ON ((`po`.`idpoblacion` = `cl`.`idpoblacion`))
+        join `personaempresa` `pe` on ((`pe`.`idtipocliente`=`cl`.`idtipocliente`))
+        );
 
 
 
 create view clientesselect as
  SELECT 
-cl.codigocliente,concat(cl.nombrecliente,cl.apellidopcliente,' ',cl.apellidomcliente) as nombre,
+cl.codigocliente,concat(cl.nombrecliente,' ',cl.apellidopcliente,' ',cl.apellidomcliente) as nombre,
 concat(cl.colonia,' ',cl.calle,' #',cl.numero,' ',po.nombre) as direccion
 FROM cliente cl
 INNER JOIN sexo se ON se.idsexo=cl.idsexo
 INNER JOIN poblacion po ON po.idpoblacion=cl.idpoblacion;
+
 
 create view direcionesselect as
  SELECT 
@@ -296,7 +339,7 @@ inner join centrodetrabajo cdt on cdt.codigocdt=dep.codigocdt;
 drop view if exists vistaarticulos;
 
 create view vistaarticulos as
- select ar.codigoarticulo,ar.nombre,ar.precioventa,ar.preciofabrica,pr.nombreproveedor from articulo ar
+ select ar.codigoarticulo,ar.nombre,ar.precioventa,ar.preciofabrica,pr.nombreproveedor,pr.codigoproveedor from articulo ar
  inner join proveedor pr on pr.codigoproveedor=ar.codigoproveedor;
  
 
@@ -771,7 +814,7 @@ create procedure addcliente (
     in _teléfono                varchar(50), 
     in _saldo                   float,
     in _límitecrédito           float,
-    in _personaempresa          bool
+    in _idtipocliente          int
     )
 begin
 insert into cliente(
@@ -786,7 +829,7 @@ insert into cliente(
      teléfono, 
      saldo,
      límitecrédito,
-     personaempresa
+     idtipocliente
 ) values (
      _nombrecliente,
      _apellidopcliente,
@@ -799,7 +842,7 @@ insert into cliente(
      _teléfono, 
      _saldo,
      _límitecrédito,
-     _personaempresa
+     _idtipocliente
      );
 end$$
 
@@ -822,7 +865,7 @@ create procedure editarcliente (
     in _teléfono                varchar(50), 
     in _saldo                   float,
     in _límitecrédito           float,
-    in _personaempresa          bool
+    in _idtipocliente          int
     )
 begin
 update cliente set
@@ -837,7 +880,7 @@ update cliente set
      teléfono=_teléfono, 
      saldo=_saldo,
      límitecrédito=_límitecrédito,
-     personaempresa=_personaempresa
+     idtipocliente=_idtipocliente
 where codigocliente=_codigocliente;
 end$$
 

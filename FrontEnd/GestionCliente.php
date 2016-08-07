@@ -134,8 +134,8 @@
                 <div class="input-field col s12">
                     <select required id="TipoCliente_label">
                         <option value=null disabled selected>Seleccione</option>
-                        <option value="0">Persona</option>
-                        <option value="1">Empresa</option>
+                        <option value="1">Persona</option>
+                        <option value="2">Empresa</option>
                     </select>
                     <label>Tipo de cliente</label>
                 </div>

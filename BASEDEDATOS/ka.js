@@ -429,3 +429,146 @@ $.ajax({
 
             }
         });
+
+
+/*HIJOS*/
+       $(document).ready(Cargar);
+    function Cargar(){
+
+       $.ajax({
+           url:"../BackEnd/Back.php",
+           type:'post',
+           data:({
+               action:"Hijo",
+               Metodo: "Cambio",
+               atributos:{
+                id:1,
+                d1:"HIJO",
+                d2:"HIJO",
+                d3:"HIJO",
+                d4:1,
+                d5:"HIJO",
+                d6:"HIJO",
+                d7:"HIJO",
+                d8:1,
+                d9:"2015-05-05",
+                d10: 6
+               }
+           }),
+           success: function (data) {
+
+               data=JSON.parse(data);
+
+            console.log(data);
+           }
+       });
+    };
+
+
+       $(document).ready(Cargar);
+    function Cargar(){
+
+       $.ajax({
+           url:"../BackEnd/Back.php",
+           type:'post',
+           data:({
+               action:"Hijo",
+               Metodo: "Cambio",
+               atributos:{
+                d1:"HIJO",
+                d2:"HIJO",
+                d3:"HIJO",
+                d4:1,
+                d5:"HIJO",
+                d6:"HIJO",
+                d7:"HIJO",
+                d8:1,
+                d9:"2015-05-05",
+                d10: 6
+               }
+           }),
+           success: function (data) {
+
+               data=JSON.parse(data);
+
+            console.log(data);
+           }
+       });
+    };
+
+   $.ajax({
+                url:"../BackEnd/Back.php",
+                type:'post',
+                data:({
+                    action:"Hijo",
+                    Metodo: "Baja",
+                    id: 1
+                }),
+                success: function (data) {
+                    console.log(data)
+       
+                }
+            });
+
+
+
+
+     $.ajax({
+           url:"../BackEnd/Back.php",
+           type:'post',
+           data:({
+               action:"Direcciones",
+               Metodo: "Alta",
+               atributos:{
+                d1:"HIJO",
+                d2:"HIJO",
+                d3:"HIJO",
+                d4:4,
+                d5:4
+               }
+           }),
+           success: function (data) {
+
+               data=JSON.parse(data);
+
+            console.log(data);
+           }
+       });
+
+
+     $.ajax({
+           url:"../BackEnd/Back.php",
+           type:'post',
+           data:({
+               action:"Direcciones",
+               Metodo: "Cambio",
+               atributos:{
+                id:4,
+                d1:"HIJO",
+                d2:"HIJO",
+                d3:"HIJO",
+                d4:4,
+                d5:4
+               }
+           }),
+           success: function (data) {
+
+               data=JSON.parse(data);
+
+            console.log(data);
+           }
+       });
+
+$.ajax({
+           url:"../BackEnd/Back.php",
+           type:'post',
+           data:({
+               action:"Direcciones",
+               Metodo: "GetDirecciones"
+           }),
+           success: function (data) {
+               data=JSON.parse(data);
+                     console.log(data);
+
+           }
+       });

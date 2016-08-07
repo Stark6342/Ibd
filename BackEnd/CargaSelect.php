@@ -57,6 +57,12 @@ class CargaSelect extends conec
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
+
+          public function get_empleados(){
+        $result = $this->_db->query('SELECT * FROM empeladoselect;');
+        $art = $result->fetch_all(MYSQLI_ASSOC);
+        return $art;
+    }
  
 
 

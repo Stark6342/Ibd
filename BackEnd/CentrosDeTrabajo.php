@@ -37,7 +37,7 @@ class CentrosDeTrabajo extends conec
 
 
    public function Get_CDT_por_ID($id){
-        $result = $this->_db->query("SELECT * FROM centrosdetrabajovista where codigocdt=".$id.";");
+        $result = $this->_db->query("SELECT * FROM centrodetrabajo where codigocdt=".$id.";");
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }

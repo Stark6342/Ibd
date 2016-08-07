@@ -11,7 +11,10 @@ require_once "Clientes.php";
 require_once "Departamento.php";
 require_once "Empleados.php";
 require_once "Pedidos.php";
+require_once "Hijos.php";
 require_once "Proveedores.php";
+require_once "Direccion.php";
+require_once "Respaldo.php";
 
 
 switch ($_POST['action']){
@@ -81,6 +84,12 @@ switch ($_POST['action']){
             case "GetCdt":
                 $cdt=new CentrosDeTrabajo();
                 $ok=json_encode($cdt->get_CentrosDeTraajo());
+                echo $ok;
+                unset($cdt);
+                break;
+            case "GetCdtPorId":
+                $cdt=new CentrosDeTrabajo();
+                $ok=json_encode($cdt->Get_CDT_por_ID($_POST['id']));
                 echo $ok;
                 unset($cdt);
                 break;
@@ -273,4 +282,92 @@ switch ($_POST['action']){
 
         }
         break;
+
+
+case "Hijo":
+        switch ($_POST['Metodo']){
+            case "GetHijosPorId":
+                $hij = new Hijos();
+                $ok=json_encode($hij->Get_hijo_por_ID($_POST['id']));
+                echo $ok;
+                unset($hij);
+                break;
+            case "GetHijos":
+                $hij = new Hijos();
+                $ok=json_encode($hij->get_hijo());
+                echo $ok;
+                unset($hij);
+                break;
+            case "Alta":
+                $hij=new Hijos();
+                $ok=$hij->Alta($_POST['atributos']);
+                echo $ok;
+                unset($hij);
+                break;
+            case "Baja":
+                $hij=new Hijos();
+                $ok=$hij->Baja($_POST['id']);
+                echo $ok;
+                unset($hij);
+                break;
+            case "Cambio":
+                $hij=new Hijos();
+                $ok=$hij->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($hij);
+                break;
+
+        }
+        break;
+
+
+case "Direcciones":
+        switch ($_POST['Metodo']){
+            case "GetDireccionesPorId":
+                $dir = new Direccion();
+                $ok=json_encode($dir->Get_direccion_por_ID($_POST['id']));
+                echo $ok;
+                unset($dir);
+                break;
+            case "GetDirecciones":
+                $dir = new Direccion();
+                $ok=json_encode($dir->get_direccion());
+                echo $ok;
+                unset($dir);
+                break;
+            case "Alta":
+                $dir=new Direccion();
+                $ok=$dir->Alta($_POST['atributos']);
+                echo $ok;
+                unset($dir);
+                break;
+            case "Baja":
+                $dir=new Direccion();
+                $ok=$dir->Baja($_POST['id']);
+                echo $ok;
+                unset($dir);
+                break;
+            case "Cambio":
+                $dir=new Direccion();
+                $ok=$dir->Cambio($_POST['atributos']);
+                echo $ok;
+                unset($dir);
+                break;
+
+        }
+        break;
+
+        case "Respaldos":
+        switch ($_POST['Metodo']){
+            case "GetRespaldos":
+                    $res = new Respaldo();
+                $ok=json_encode($res->get_respaldo());
+                echo $ok;
+                unset($res);
+                break;
+    
+
+        }
+        break;
+
 }

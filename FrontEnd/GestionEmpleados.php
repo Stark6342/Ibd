@@ -216,8 +216,7 @@ var idedit="0";;
             success: function (data) {
                 console.log(data);
                 data=JSON.parse(data);
-                $('#Nombre_label').val(data[0].nombre);
-                $('#PresupuestoAnual_label').val(data[0].presupuestoanual);
+       
 
                     $('#Nombre_label').val(data[0]. nombreempleado);
                     $('#ApellidoP_label').val(data[0].apellidopempleado);
