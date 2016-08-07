@@ -817,6 +817,9 @@ create procedure addcliente (
     in _idtipocliente          int
     )
 begin
+if _saldo>_límitecrédito then
+  _saldo=_límitecrédito;
+end if;
 insert into cliente(
      nombrecliente,
      apellidopcliente,

@@ -319,7 +319,12 @@
             console.log(d10);
             console.log(d11);
             console.log(d12);
-            if(id!=""){
+           
+            if(d11>50000){
+              Materialize.toast('Saldo sobrepasado', 4000,"red");
+            }
+                else{
+ if(id!=""){
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',
@@ -411,6 +416,8 @@
 
                 });
             };
+                }
+
         });
     });
 
