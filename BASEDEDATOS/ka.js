@@ -253,7 +253,9 @@
                 });
 /*RECIBIR TABLA*/
 
- $.ajax({
+
+
+  $.ajax({
            url:"../BackEnd/Back.php",
            type:'post',
            data:({
@@ -275,7 +277,7 @@
             data:({
                 action:"Pedido",
                 Metodo: "GetPedidosPorId",
-                id: 12
+                id: 51
             }),
             success: function (data) {
                 data=JSON.parse(data);
@@ -289,6 +291,22 @@
 
  /*EMPLEDOS*/              
  /*ALTAS*/ 
+
+
+   $.ajax({
+            url:"../BackEnd/Back.php",
+            type:'post',
+            data:({
+                action:"Empleado",
+                Metodo: "GetPedidosPorId",
+                id: 51
+            }),
+            success: function (data) {
+                data=JSON.parse(data);
+                console.log(data);
+
+            }
+        });
 
 
 

@@ -167,19 +167,19 @@ switch ($_POST['action']){
                 echo $ok;
                 unset($empl);
                 break;
-            case "GetEmpleadosCon":
+             case "DepartamentoNuevo":
                 $empl = new Empleados();
-                $ok=json_encode($empl->get_empleadoCon());
+                $ok=json_encode($empl->AnadirDepartamento($_POST['atributos']));
+                echo $ok;
+                unset($empl);
+                break;   
+            case "GetEmpleados":
+                $empl = new Empleados();
+                $ok=json_encode($empl->get_empleado());
                 echo $ok;
                 unset($empl);
                 break;
-              case "GetEmpleadosSin":
-                $empl = new Empleados();
-                $ok=json_encode($empl->get_empleadoSin());
-                echo $ok;
-                unset($empl);
-                break;
-  
+
             case "Alta":
                 $empl=new Empleados();
                 $ok=$empl->Alta($_POST['atributos']);
