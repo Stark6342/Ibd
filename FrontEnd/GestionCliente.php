@@ -204,19 +204,18 @@
                 id: clicked_id
             }),
             success: function (data) {
+                console.log(data);
                 data=JSON.parse(data);
                 console.log(data);
-                $('#Nombre_label').val(data[0].Nombre);
-                $('#ApellidoP_label').val(data[0].Ap);
-                $('#ApellidoM_label').val(data[0].AM);
-                $('#Colonia_label').val(data[0].Colonia);//Calle_label
-                $('#Calle_label').val(data[0].Calle);
-                $('#NumeroExterior_label').val(data[0].Num);
+                $('#Nombre_label').val(data[0].nombrecliente);
+                $('#ApellidoP_label').val(data[0].apellidopcliente);
+                $('#ApellidoM_label').val(data[0].apellidomcliente);
+                $('#Colonia_label').val(data[0].colonia);//Calle_label
+                $('#Calle_label').val(data[0].calle);
+                $('#NumeroExterior_label').val(data[0].numero);
                 $('#Telefono_label').val(data[0].tel);
-                $('#Saldo_label').val(data[0].sal);
-                $('#SaldoLimite_label').val(data[0].lim);
-
-                //$('#Proveedor_label').attr("value",data[0].CodigoProveedor);
+                $('#Saldo_label').val(data[0].saldo);
+                $('#SaldoLimite_label').val(data[0].lc);
             }
         });
     }
@@ -250,7 +249,7 @@
                     $('#Tabla').empty();
                     var table = $('<table class="responsive-table striped"> <thead> <tr> <th>Codigo</th> <th>Nombre</th> <th>Apellidos</th> <th>Sexo</th> <th>Poblacion</th> <th>Direccion</th> <th>Telefono</th> <th>Saldo</th> <th>Tipo de cliente</th><th>Acciones</th> </tr></thead></table>');
                     for(i=0; i<data.length; i++){
-                        table.append('<tr><td>'+data[i].CodCliete+'</td><td>'+data[i].NombreCliente+'</td><td>'+data[i].Apellidos+'</td><td>'+data[i].Sexo+'</td><td>'+data[i].Poblacion+'</td><td>'+data[i].Direccion+'</td><td>'+data[i].Telefono+'</td><td>'+data[i].Saldo+'</td><td>'+data[i].Empresa+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodCliete+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodCliete+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                        table.append('<tr><td>'+data[i].codcliete+'</td><td>'+data[i].nombrecliente+'</td><td>'+data[i].apellidos+'</td><td>'+data[i].sexo+'</td><td>'+data[i].poblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].telefono+'</td><td>'+data[i].saldo+'</td><td>'+data[i].empresa+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodCliete+'" class="small material-icons btn red">delete</a><a id="'+data[i].codcliete+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                     }
                     $('#Tabla').append(table);
                 }
@@ -306,20 +305,6 @@
             var d10=$('#Saldo_label').val();
             var d11=$('#SaldoLimite_label').val();
             var d12=$('#TipoCliente_label').val();
-            console.log(id);
-            console.log(d1);
-            console.log(d2);
-            console.log(d3);
-            console.log(d4);
-            console.log(d5);
-            console.log(d6);
-            console.log(d7);
-            console.log(d8);
-            console.log(d9);
-            console.log(d10);
-            console.log(d11);
-            console.log(d12);
-           
             if(d11>50000){
               Materialize.toast('Saldo sobrepasado', 4000,"red");
             }

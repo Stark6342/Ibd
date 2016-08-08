@@ -13,7 +13,7 @@ class CentrosDeTrabajo extends conec
     }
 
     public function get_CentrosDeTraajo(){
-        $result = $this->_db->query("SELECT * FROM CentrosDeTrabajoVista");
+        $result = $this->_db->query("SELECT * FROM centrosdetrabajovista");
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }

@@ -68,7 +68,8 @@ switch ($_POST['action']){
         switch ($_POST['Metodo']){
             Case "Alta":
                 $cdt =new CentrosDeTrabajo();
-                $res=$cdt->Alta($_POST['atributos']);
+                $res=$cdt->alta($_POST['atributos']);
+                //$res=$cdt->Alta($_POST['atributos']);
                 echo $res;
                 Break;
             Case "Cambio":

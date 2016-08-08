@@ -151,7 +151,7 @@
                 });
 /*RECIBIR TABLA*/
 
- $.ajax({
+        $.ajax({
            url:"../BackEnd/Back.php",
            type:'post',
            data:({

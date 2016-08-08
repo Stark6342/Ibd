@@ -196,10 +196,6 @@ var idedit="0";;
             dismissible: true
         }
     );
-<<<<<<< HEAD
-</script>
-<?php } } ?>
-=======
 
    function elementos(clicked_id) {
         $('#baja').openModal();
@@ -472,13 +468,4 @@ var idedit="0";;
     });
 
 </script>
-
-
-
-
-
-
-
-
-
->>>>>>> 974d2f1bfca4d93b1f2bf9596dd85186aa02e50a
+<?php } } ?>

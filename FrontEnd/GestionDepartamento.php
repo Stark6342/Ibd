@@ -99,7 +99,7 @@ if($_SESSION['Validado']=="aceptado"){
 
 
 <script>
-var idedit="0";;
+var idedit="0";
     $(document).ready(function() {
         $('select').material_select();
     });
@@ -107,10 +107,6 @@ var idedit="0";;
             dismissible: true
         }
     );
-<<<<<<< HEAD
-</script>
-<?php } } ?>
-=======
 
    function elementos(clicked_id) {
         $('#baja').openModal();
@@ -140,8 +136,6 @@ var idedit="0";;
     }
 
 
-/*CARGAR LA TABLA*/
-    // Esto Carga LA tabla Automaticamente
     $(document).ready(Cargar);
     function Cargar(){
 
@@ -161,7 +155,7 @@ var idedit="0";;
                      //console.log("data");
                        $('#Tabla').empty();
                        var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Presupuesto anual</th> <th>Centro de Trabajo</th><th class="center">Acciones</th> </tr> </thead></table>');
-                       for(i=0; i<data.length; i++){
+                       for(var i=0; i<data.length; i++){
                            table.append('<tr><td>'+data[i].codigodepartamento+'</td><td>'+data[i].nombre+'</td><td>'+data[i].presupuestoanual+'</td><td>'+data[i].nombrecdt+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].codigodepartamento+'" class="small material-icons btn red">delete</a><a id="'+data[i].codigodepartamento+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                        }
                        $('#Tabla').append(table);
@@ -208,22 +202,12 @@ var idedit="0";;
 
     $(function (){
         $('#Enviar').click(function () {
-
             var id=idedit;
-                          
-
             event.preventDefault();
             var nombre=$('#Nombre_label').val();
             var presup=$('#PresupuestoAnual_label').val();
             var CDTVAR=$('#CDT_label').val();
-            
-
             if(id!="0"){
-                console.log("HOLA"+idedit+"HOLA");
-console.log("HOLA"+nombre+"HOLA");
-console.log("HOLA"+presup+"HOLA");
-console.log("HOLA"+CDTVAR+"HOLA");
-
                 $.ajax({
                 url:"../BackEnd/Back.php",
                 type:'post',
@@ -289,6 +273,5 @@ console.log("HOLA"+CDTVAR+"HOLA");
             };
         });
     });
-
-</script>
->>>>>>> 974d2f1bfca4d93b1f2bf9596dd85186aa02e50a
+    </script>
+<?php } } ?>

@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+
 session_start();
 if(!isset($_SESSION["Validado"])) {
     header("location:../");
@@ -11,7 +12,7 @@ if($_SESSION['Validado']=="aceptado"){
 
     $pobla=new CargaSelect();
     $_pop=$pobla->get_poblacion();
-    $_pop1=$pobla->get_empleados()
+    $_pop1=$pobla->get_empleados();
 
 ?>
 <head>
@@ -87,7 +88,7 @@ if($_SESSION['Validado']=="aceptado"){
                 <div class="input-field col s12">
                     <select required id="Director_label">
                         <option value=null disabled selected>Seleccione</option>
-  <?php
+                          <?php
                         foreach ($_pop1 as $row){
                             echo '<option value="'.$row['codigoempleado'].'">'.$row['nombre'].'</option>';
                         }
@@ -126,7 +127,7 @@ if($_SESSION['Validado']=="aceptado"){
 
 
 <script>
-var idedit="0";
+//var idedit="0";
     $(document).ready(function() {
         $('select').material_select();
     });
@@ -170,7 +171,7 @@ var idedit="0";
     }
 
 
-    /* Para la carga de la tabla*/
+
     $(document).ready(Cargar);
     function Cargar(){
         $.ajax({
@@ -264,7 +265,6 @@ var idedit="0";
                             p4:call,
                             p5:numext,
                             p6:prov
-
                         }
                     }),
                     success: function(data) {
@@ -292,7 +292,6 @@ var idedit="0";
             }
             else{
                                 console.log("ALTA");
-
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',

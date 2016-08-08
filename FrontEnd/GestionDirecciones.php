@@ -16,7 +16,7 @@
         <br>
         <h5 class="center">Gestion de Direcciones</h5>
         <br><hr><br>
-        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">+</i></a>
+        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">add</i></a>
     </div>
 </div>
 
@@ -27,8 +27,9 @@
     <div class="modal-content">
         <form id="AltaDireccion">
             <h4>Alta Direcciones</h4>
-
-
+            <div>
+                <input id="idCambio" type="text" value="" hidden>
+            </div>
             <div class="row">
                 <div class="input-field col s12">
                     <input placeholder="Colonia" id="Colonia_label" type="text" class="validate" required>
@@ -143,7 +144,8 @@ var idedit="0";;
     function elementos2(clicked_id) {
         console.log(clicked_id);
         $('#alta').openModal();
-        idedit=clicked_id;
+        $('#idCambio').attr("value",clicked_id);
+        $('#idCambio').val(clicked_id);
         $.ajax({
             url:"../BackEnd/Back.php",
             type:'post',
@@ -236,23 +238,14 @@ var idedit="0";;
 
     $(function (){
         $('#Enviar').click(function () {
-
-            var id=idedit;
-                          
-
+            var id=$('#idCambio').val();
             event.preventDefault();
-
             var colon=$('#Colonia_label').val();
             var calle=$('#Calle_label').val();
             var ciud=$('#Poblacion_label').val();
             var num=$('#NumeroExterior_label').val();
             var Cli=$('#Cliente_label').val();
-     
-
-
             if(id!="0"){
-
-
                 $.ajax({
                 url:"../BackEnd/Back.php",
                 type:'post',
@@ -266,21 +259,17 @@ var idedit="0";;
                         d3:num,
                         d4:ciud,
                         d5:Cli
-                       
                     }
                 }),
                 success: function(data) {
                  //  console.log(data);
                     if(data=="1"){
                         Materialize.toast('Se Actualizo con Exito', 4000,"green");
-    
-                       $('#Colonia_label').val("");
+                        $('#Colonia_label').val("");
                         $('#Calle_label').val("");
-                       $('#Poblacion_label').val("");
+                        $('#Poblacion_label').val("");
                         $('#NumeroExterior_label').val("");
-                             
-
-                          idedit="0";
+                        $('#idCambio').val("");
                         $('#alta').closeModal();
                     }
                     else if(data=="0")
@@ -317,16 +306,13 @@ var idedit="0";;
                         $('#NumeroExterior_label').val("");
                         idedit="0";
                         $('#alta').closeModal();
-
                         }
                         else if(data=="0")
                             Materialize.toast('Error al Insertar', 4000,"red");
                         else
                             Materialize.toast('Faltan Campsos por llenar', 4000,"yellow");
-
                         Cargar();
                     }
-
                 });
             };
         });

@@ -82,7 +82,7 @@ if($_SESSION['Validado']=="aceptado"){
                         <option value="" disabled selected>Elige tu opcion</option>
                         <?php
                         foreach ($_pro as $row){
-                            echo '<option value="'.$row['CodigoProveedor'].'">'.$row['NombreProveedor'].'</option>';
+                            echo '<option value="'.$row['codigoproveedor'].'">'.$row['nombreproveedor'].'</option>';
                         }
                         ?>
                     </select>
@@ -115,7 +115,7 @@ if($_SESSION['Validado']=="aceptado"){
                        $('#here_table').empty();
                        var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th><th>Nombre</th><th>Precio Venta</th> <th>Precio Fabrica</th> <th>Provedor</th> <th class="center">Acciones</th> </tr> </thead></table>');
                        for(i=0; i<data.length; i++){
-                           table.append('<tr><td>'+data[i].CodigoArticulo+'</td><td>'+data[i].Nombre+'</td><td>'+data[i].PrecioVenta+'</td><td>'+data[i].PrecioFabrica+'</td><td>'+data[i].NombreProveedor+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoArticulo+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoArticulo+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                           table.append('<tr><td>'+data[i].codigoarticulo+'</td><td>'+data[i].nombre+'</td><td>'+data[i].precioventa+'</td><td>'+data[i].preciofabrica+'</td><td>'+data[i].nombreproveedor+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].codigoarticulo+'" class="small material-icons btn red">delete</a><a id="'+data[i].codigoarticulo+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                        }
                        $('#here_table').append(table);
                    }
@@ -164,10 +164,10 @@ if($_SESSION['Validado']=="aceptado"){
             success: function (data) {
                 console.log(data);
                 data=JSON.parse(data);
-                $('#Nombre_label').val(data[0].Nombre);
-                $('#pv_label').val(data[0].PrecioVenta);
-                $('#pf_label').val(data[0].PrecioFabrica);
-                $('#Proveedor_label').attr("value",data[0].CodigoProveedor);
+                $('#Nombre_label').val(data[0].nombre);
+                $('#pv_label').val(data[0].precioventa);
+                $('#pf_label').val(data[0].preciofabrica);
+                $('#Proveedor_label').attr("value",data[0].codigoproveedor);
             }
         });
         Cargar();
