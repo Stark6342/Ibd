@@ -148,7 +148,8 @@ if($_SESSION['Validado']=="aceptado"){
    function elementos2(clicked_id) {
         console.log(clicked_id);
         $('#alta').openModal();
-        idedit=clicked_id;
+       $('#idCambio').attr("value",clicked_id);
+       $('#idCambio').val(clicked_id);
         $.ajax({
             url:"../BackEnd/Back.php",
             type:'post',
@@ -159,8 +160,7 @@ if($_SESSION['Validado']=="aceptado"){
             }),
             success: function (data) {
                 console.log(data);
-                data=JSON.parse(data);      
-
+                data=JSON.parse(data);
                 $('#Nombre_label').val(data[0].nombrecdt);
                 $('#Colonia_label').val(data[0].colonia);
                 $('#NumeroExterior_label').val(data[0].numero);
@@ -232,7 +232,8 @@ if($_SESSION['Validado']=="aceptado"){
     //Funcion para enviar y editar
     $(function (){
         $('#Enviar').click(function () {
-            var id=idedit;
+            var id=$('#idCambio').val();
+            console.log(id);
             event.preventDefault();
             var nombre=$('#Nombre_label').val();
             var pob=$('#Poblacion_label').val();
@@ -240,16 +241,7 @@ if($_SESSION['Validado']=="aceptado"){
             var numext=$('#NumeroExterior_label').val();
             var call=$('#Calle_label').val();
             var prov=$('#Director_label').val();
-                            console.log(id+" id");
-                            console.log(nombre+" nombre");
-                            console.log(pob+" poblacion");
-                            console.log(col+" Colonia");
-                            console.log(call+ "Calle");
-                            console.log(numext + " numero");
-                            console.log(prov+ " prov");
-
-
-            if(id!="0"){
+            if(id!=""){
                 console.log("EDITAR");
                 $.ajax({
                     url:"../BackEnd/Back.php",
@@ -273,13 +265,10 @@ if($_SESSION['Validado']=="aceptado"){
                             Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
                              idedit="0";
                             $('#Nombre_label').val("");
-                            $('#Poblacion_label').val("");
                             $('#Colonia_label').val("");
                             $('#NumeroExterior_label').val("");
-                            $('#Director_label').val("");
                             $('#Calle_label').val("");
-
-
+                            $('#idCambio').val("");
                             $('#alta').closeModal();
                         }
                         else if(data=="0")
@@ -291,7 +280,7 @@ if($_SESSION['Validado']=="aceptado"){
                 });
             }
             else{
-                                console.log("ALTA");
+                console.log("ALTA");
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',
@@ -308,18 +297,14 @@ if($_SESSION['Validado']=="aceptado"){
                         }
                     }),
                     success: function(data) {
-                        //      console.log(data);
+                        console.log(data);
                         if(data=="1"){
                             Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
                              idedit="0";
                             $('#Nombre_label').val("");
-                            $('#Poblacion_label').val("");
                             $('#Colonia_label').val("");
                             $('#NumeroExterior_label').val("");
-                            $('#Director_label').val("");
                             $('#Calle_label').val("");
-
-
                             $('#alta').closeModal();
                         }
                         else if(data=="0")
