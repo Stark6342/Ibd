@@ -11,6 +11,8 @@ if($_SESSION['Validado']=="aceptado"){
 
     $pobla=new CargaSelect();
     $_pop=$pobla->get_poblacion();
+    $_pop1=$pobla->get_empleados()
+
 ?>
 <head>
     <title>Gestion Centro de Trabajo</title>
@@ -60,12 +62,14 @@ if($_SESSION['Validado']=="aceptado"){
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="input-field col s12">
                     <input placeholder="Colonia" id="Colonia_label" type="text" class="validate" required>
                     <label for="Colonia_label">Colonia</label>
                 </div>
             </div>
+
             <div class="row">
                 <div class="input-field col s12">
                     <input placeholder="Numero extrior" id="NumeroExterior_label" type="text" class="validate" required>
@@ -78,20 +82,24 @@ if($_SESSION['Validado']=="aceptado"){
                     <label for="Calle_label">Calle</label>
                 </div>
             </div>
+
                           <div class="row">
                 <div class="input-field col s12">
                     <select required id="Director_label">
                         <option value=null disabled selected>Seleccione</option>
-                        <option value="1">Empleado 1</option>
-                        <option value="2">Empleado 2</option>
-                        <option value="3">Empleado 3</option>
+  <?php
+                        foreach ($_pop1 as $row){
+                            echo '<option value="'.$row['codigoempleado'].'">'.$row['nombre'].'</option>';
+                        }
+                        ?>
                     </select>
                     <label>Director</label>
                 </div>
             </div>
+
             <div class="modal-footer center">
                 <a href="" class="modal-action modal-close waves-effect red white-text btn-flat ">Cancelar</a>
-                <button type="submit" class="modal-action waves-effect green white-text btn-flat">Aceptar</button>
+                <button id="Enviar" type="submit" class="modal-action waves-effect green white-text btn-flat">Aceptar</button>
             </div>
         </form>
     </div>
@@ -118,6 +126,7 @@ if($_SESSION['Validado']=="aceptado"){
 
 
 <script>
+var idedit="0";
     $(document).ready(function() {
         $('select').material_select();
     });
@@ -135,6 +144,32 @@ if($_SESSION['Validado']=="aceptado"){
         $('#idEliminar').attr("value",clicked_id);
     }
 
+   function elementos2(clicked_id) {
+        console.log(clicked_id);
+        $('#alta').openModal();
+        idedit=clicked_id;
+        $.ajax({
+            url:"../BackEnd/Back.php",
+            type:'post',
+            data:({
+                action:"CentroTrabajo",
+                Metodo: "GetCdtPorId",
+                id: clicked_id
+            }),
+            success: function (data) {
+                console.log(data);
+                data=JSON.parse(data);      
+
+                $('#Nombre_label').val(data[0].nombrecdt);
+                $('#Colonia_label').val(data[0].colonia);
+                $('#NumeroExterior_label').val(data[0].numero);
+                $('#Calle_label').val(data[0].calle);
+            }
+        });
+        Cargar();
+    }
+
+
     /* Para la carga de la tabla*/
     $(document).ready(Cargar);
     function Cargar(){
@@ -151,7 +186,7 @@ if($_SESSION['Validado']=="aceptado"){
                     $('#Tabla').empty();
                     var table = $('<table class="responsive-table striped"><thead><tr><th>Codigo</th> <th>Nombre</th> <th>Poblacion</th><th>Direccion</th> <th>Director</th><th class="center">Acciones</th></tr></thead></table>');
                     for(i=0; i<data.length; i++){
-                        table.append('<tr><td>'+data[i].CodigoCDT+'</td><td>'+data[i].NombreCDT+'</td><td>'+data[i].nombrepoblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].Director+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodigoCDT+'" class="small material-icons btn red">delete</a><a id="'+data[i].CodigoCDT+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                        table.append('<tr><td>'+data[i].codigocdt+'</td><td>'+data[i].nombrecdt+'</td><td>'+data[i].nombrepoblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].director+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].codigocdt+'" class="small material-icons btn red">delete</a><a id="'+data[i].codigocdt+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                     }
                     $('#Tabla').append(table);
 
@@ -196,35 +231,55 @@ if($_SESSION['Validado']=="aceptado"){
     //Funcion para enviar y editar
     $(function (){
         $('#Enviar').click(function () {
-            var id=$('#idCambio').val();
+            var id=idedit;
             event.preventDefault();
             var nombre=$('#Nombre_label').val();
-            var pv_label=$('#pv_label').val();
-            var pf_label=$('#pf_label').val();
-            var Proveedor_label=$('#Proveedor_label').val();
-            if(id!=""){
+            var pob=$('#Poblacion_label').val();
+            var col=$('#Colonia_label').val();
+            var numext=$('#NumeroExterior_label').val();
+            var call=$('#Calle_label').val();
+            var prov=$('#Director_label').val();
+                            console.log(id+" id");
+                            console.log(nombre+" nombre");
+                            console.log(pob+" poblacion");
+                            console.log(col+" Colonia");
+                            console.log(call+ "Calle");
+                            console.log(numext + " numero");
+                            console.log(prov+ " prov");
+
+
+            if(id!="0"){
+                console.log("EDITAR");
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',
                     data:({
-                        action:"articulos",
+                        action:"CentroTrabajo",
                         Metodo: "Cambio",
                         atributos:{
                             id:id,
-                            n:nombre,
-                            p1:pv_label,
-                            p2:pf_label,
-                            p3:Proveedor_label
+                            p1:nombre,
+                            p2:pob,
+                            p3:col,
+                            p4:call,
+                            p5:numext,
+                            p6:prov
+
                         }
                     }),
                     success: function(data) {
                         //    console.log(data);
                         if(data=="1"){
                             Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
-                            $('#idCambio').val("");
+                             idedit="0";
                             $('#Nombre_label').val("");
-                            $('#pv_label').val("");
-                            $('#pf_label').val("");
+                            $('#Poblacion_label').val("");
+                            $('#Colonia_label').val("");
+                            $('#NumeroExterior_label').val("");
+                            $('#Director_label').val("");
+                            $('#Calle_label').val("");
+
+
                             $('#alta').closeModal();
                         }
                         else if(data=="0")
@@ -236,26 +291,36 @@ if($_SESSION['Validado']=="aceptado"){
                 });
             }
             else{
+                                console.log("ALTA");
+
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',
                     data:({
-                        action:"articulos",
-                        Metodo: "alta",
+                        action:"CentroTrabajo",
+                        Metodo: "Alta",
                         atributos:{
-                            n:nombre,
-                            p1:pv_label,
-                            p2:pf_label,
-                            p3:Proveedor_label
+                            p1:nombre,
+                            p2:pob,
+                            p3:col,
+                            p4:call,
+                            p5:numext,
+                            p6:prov
                         }
                     }),
                     success: function(data) {
                         //      console.log(data);
                         if(data=="1"){
                             Materialize.toast('Se Inserto/Actualizo con Exito', 4000,"green");
+                             idedit="0";
                             $('#Nombre_label').val("");
-                            $('#pv_label').val("");
-                            $('#pf_label').val("");
+                            $('#Poblacion_label').val("");
+                            $('#Colonia_label').val("");
+                            $('#NumeroExterior_label').val("");
+                            $('#Director_label').val("");
+                            $('#Calle_label').val("");
+
+
                             $('#alta').closeModal();
                         }
                         else if(data=="0")

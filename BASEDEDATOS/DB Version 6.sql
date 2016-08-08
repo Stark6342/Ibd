@@ -48,7 +48,8 @@ create table empleado (
     foreign key (idsexo) references sexo(idsexo)   on delete cascade,
     foreign key (idpoblacion) references poblacion(idpoblacion)   on delete cascade
     );
-
+    
+ 
 
 
 
@@ -69,7 +70,6 @@ create table hijo (
     foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade
     );
 
- 
 
 create table centrodetrabajo (
     codigocdt               int primary key auto_increment,
@@ -94,7 +94,7 @@ create table departamento (
     codigocdt               int,
     foreign key (codigocdt) references centrodetrabajo(codigocdt)  on delete cascade
     );
-
+insert into departamento (codigodepartamento,nombre)values(0,'Sin departamento');
 
 
 
@@ -116,6 +116,12 @@ create table empleadohabilidad(
     foreign key (codigohabilidad) references habilidad(codigohabilidad)  on delete cascade
 );
 
+create table personaempresa(
+tipocliente varchar(50),
+idtipocliente int primary key
+);
+    insert into personaempresa (idtipocliente,tipocliente) values(1,'Persona'),(2,'Empresa');
+
 
 create table cliente (
     codigocliente           int primary key auto_increment,
@@ -130,10 +136,11 @@ create table cliente (
     teléfono                varchar(50), 
     saldo                   float,
     límitecrédito           float,
-    personaempresa          bool,
+    idtipocliente          int,
 
     foreign key (idsexo) references sexo(idsexo)  on delete cascade,
-    foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade
+    foreign key (idpoblacion) references poblacion(idpoblacion)  on delete cascade,
+    foreign key (idtipocliente) references personaempresa(idtipocliente)
 );
 
 
@@ -150,20 +157,35 @@ create table cliente (
     foreign key (codigocliente) references cliente(codigocliente)  on delete cascade
     );
     
-
     
+   
+    
+create table tipoproveedores (
+idtipo int primary key ,
+tipo varchar(50)
+);
+    insert into tipoproveedores (idtipo,tipo) values(1,'Principal'),(2,'Secundario');
+
+drop table if exists proveedor;
      create table proveedor(
     codigoproveedor         int primary key auto_increment,
     nombreproveedor         varchar(50),
     telefono                varchar(50),
     totalarticulosqueprovee int,
-    alternativo             bool -- tipoproveedor
+    alternativo             int ,-- tipoproveedor
+    foreign key (alternativo) references tipoproveedores(idtipo)
     );
-    
+  
+  drop table if exists respaldo;
+create table respaldo (
+nombreanterior varchar(50),
+nombrenuevo	   varchar(50),
+fechacambio date
+);
+create trigger pararespaldo after update on proveedor
+for each row
+insert into respaldo values(old.nombreproveedor,new.nombreproveedor,curdate());
 
-
-
-    
     create table articulo(
     codigoarticulo          varchar(4) primary key,
     nombre                  varchar(50),
@@ -201,39 +223,107 @@ create table cliente (
 
 
 -- **********************vistas*******************************
+ create view direccionesvista as
+    
+    select de.codigodireccion,de.colonia,de.calle,de.numero,
+		    po.nombre,concat(cl.nombrecliente,' ',cl.apellidopcliente,' ',cl.apellidomcliente) as nombrecl
+    from direccionenvio de
+    inner join poblacion po on po.idpoblacion=de.idpoblacion
+    inner join cliente cl on cl.codigocliente=de.codigocliente;
+
+
+   create view empeladoselect as
+    select codigoempleado,concat(nombreempleado,' ',apellidopempleado,' ',apellidomempleado) as nombre
+    from empleado;
+
+
+drop view if exists hijovista;
+create view hijovista as 
+ select hi.codigohijo,hi.nombrehijo,hi.apellidophijo,hi.apellidomhijo ,
+		hi.colonia, hi.calle,hi.numero,hi.fechanacimiento,se.sexo,po.nombre,em.nombreempleado,
+        em.apellidopempleado,em.apellidomempleado
+ from hijo hi
+ inner join sexo  se on se.idsexo=hi.idsexo
+ inner join poblacion po on po.idpoblacion=hi.idpoblacion
+ inner join empleado em on em.codigoempleado=hi.codigoempleado;
 
 
 
     drop view if exists pedidovista;
     create view pedidovista as
     select pe.codigopedido,pe.codigocliente,concat(cl.nombrecliente,' ',cl.apellidopcliente,' ',cl.apellidomcliente) as nombrecliente, 
-    concat(cl.colonia,' ',cl.calle,' #',cl.numero,' ',po.nombre) as direcciondeenvio, pe.fechapedido,
+    concat(de.colonia,' ',de.calle,' #',de.numero,' ',po.nombre) as direcciondeenvio, pe.fechapedido,
     ar.nombre,pe.descripcionarticulo,pe.cantidadarticulos,pe.importetotal,pe.descuento
     from pedido pe
     inner join articulo ar on ar.codigoarticulo=pe.codigoarticulo
-    inner join direccionenvio de on de.codigodireccion=pe.codigodireccion
+    inner join direccionenvio de on pe.codigodireccion=de.codigodireccion
     inner join cliente cl on pe.codigocliente=cl.codigocliente
     inner join poblacion  po on de.idpoblacion=po.idpoblacion;
-
 
     
 
 drop view if exists proveedorvista;
 create view proveedorvista as
-select * from proveedor;
+select 
+pr.codigoproveedor,
+pr.nombreproveedor,
+pr.telefono,
+pr.totalarticulosqueprovee,
+pr.alternativo,
+tp.tipo
+ from proveedor pr
+inner join tipoproveedores tp on pr.alternativo=tp.idtipo;
+
 
 
 
 
 drop view if exists clientevista;
-create view clientevista as
-select
-cl.codigocliente,cl.nombrecliente,concat(cl.apellidopcliente,' ',cl.apellidomcliente) as apellidos,
-se.sexo,po.nombre,concat(cl.colonia,' ',cl.calle,' #',cl.numero) as direccion,
-cl.teléfono,cl.saldo,cl.personaempresa   from cliente cl
-inner join sexo se on se.idsexo=cl.idsexo
-inner join poblacion po on po.idpoblacion=cl.idpoblacion;
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `ClienteVista` AS
+    SELECT 
+        `cl`.`CodigoCliente` AS `CodCliete`,
+        `cl`.`NombreCliente` AS `NombreCliente`,
+        CONCAT(`cl`.`ApellidoPCliente`,
+                ' ',
+                `cl`.`ApellidoMCliente`) AS `Apellidos`,
+        `se`.`sexo` AS `Sexo`,
+        `po`.`nombre` AS `Poblacion`,
+        CONCAT(`cl`.`Colonia`,
+                ' ',
+                `cl`.`Calle`,
+                ' #',
+                `cl`.`Numero`) AS `Direccion`,
+        `cl`.`teléfono` AS `Telefono`,
+        `cl`.`saldo` AS `Saldo`,
+        `pe`.`tipocliente` AS `Empresa`
+    FROM
+        ((`Cliente` `cl`
+        JOIN `Sexo` `se` ON ((`se`.`idSexo` = `cl`.`idSexo`)))
+        JOIN `poblacion` `po` ON ((`po`.`idpoblacion` = `cl`.`idpoblacion`))
+        join `personaempresa` `pe` on ((`pe`.`idtipocliente`=`cl`.`idtipocliente`))
+        );
 
+
+
+create view clientesselect as
+ SELECT 
+cl.codigocliente,concat(cl.nombrecliente,' ',cl.apellidopcliente,' ',cl.apellidomcliente) as nombre,
+concat(cl.colonia,' ',cl.calle,' #',cl.numero,' ',po.nombre) as direccion
+FROM cliente cl
+INNER JOIN sexo se ON se.idsexo=cl.idsexo
+INNER JOIN poblacion po ON po.idpoblacion=cl.idpoblacion;
+
+
+create view direcionesselect as
+ SELECT 
+cl.codigodireccion,
+concat(cl.colonia,' ',cl.calle,' #',cl.numero,' ',po.nombre) as direccion
+FROM direccionenvio cl
+INNER JOIN poblacion po ON po.idpoblacion=cl.idpoblacion;
 
 
 
@@ -249,16 +339,16 @@ inner join centrodetrabajo cdt on cdt.codigocdt=dep.codigocdt;
 drop view if exists vistaarticulos;
 
 create view vistaarticulos as
- select ar.codigoarticulo,ar.nombre,ar.precioventa,ar.preciofabrica,pr.nombreproveedor from articulo ar
+ select ar.codigoarticulo,ar.nombre,ar.precioventa,ar.preciofabrica,pr.nombreproveedor,pr.codigoproveedor from articulo ar
  inner join proveedor pr on pr.codigoproveedor=ar.codigoproveedor;
  
 
  
- drop view if exists empleadosvistacondepartamento;
+ drop view if exists empleadosvista;
  
- create view empleadosvistacondepartamento as
- select em.codigoempleado,em.nombreempleado as nombreempleado , concat(em.apellidopempleado,' ',em.apellidomempleado)as apellidos,
-se.sexo,concat(em.colonia,' ',em.calle,' ',em.numero) as direccion,
+ create view empleadosvista as
+ select em.codigoempleado,em.nombreempleado as nombreempleado , em.apellidopempleado,em.apellidomempleado,
+se.sexo,em.colonia,em.calle,em.numero,
 po.nombre as nombreciudad, em.telefono,em.fechaalta,em.numerohijos,em.salario,
  cd.nombre
 from empleado em 
@@ -267,15 +357,6 @@ inner join  departamento cd on   cd.codigodepartamento = em.codigodepartamento
 inner join poblacion po on po.idpoblacion=em.idpoblacion;
 
 
- drop view if exists empleadosvistasindepartamento;
- 
- create view empleadosvistasindepartamento as
- select em.codigoempleado,em.nombreempleado as nombreempleado , concat(em.apellidopempleado,' ',em.apellidomempleado)as apellidos,
-se.sexo,concat(em.colonia,' ',em.calle,' ',em.numero) as direccion,
-po.nombre as nombreciudad, em.telefono,em.fechaalta,em.numerohijos,em.salario
-from empleado em 
-inner join sexo se on se.idsexo=em.idsexo
-inner join poblacion po on po.idpoblacion=em.idpoblacion;
 
 
 
@@ -291,7 +372,13 @@ from centrodetrabajo cdt
 
  
  -- ***********prcedimientos y funciones******
+drop procedure if exists AddDepartamentoEmpleado;
+delimiter $$
 
+create procedure AddDepartamentoEmpleado(_idempleado int, _iddepartamento int)
+begin
+UPDATE empleado SET codigodepartamento = _iddepartamento WHERE empleado.codigoempleado =_idempleado;
+end$$
     delimiter $$
 
 
@@ -387,10 +474,10 @@ begin
 
 insert into empleado (
     nombreempleado, apellidopempleado,apellidomempleado,idsexo,colonia,
-    calle,idpoblacion,numero,telefono,fechaalta,numerohijos,salario)
+    calle,idpoblacion,numero,telefono,fechaalta,numerohijos,salario,codigodepartamento)
     values (
     _nombreempleado,_apellidopempleado,_apellidomempleado,_idsexo,
-    _colonia,_calle,_idpoblacion,_numero,_telefono,CURDATE(),0,_salario
+    _colonia,_calle,_idpoblacion,_numero,_telefono,CURDATE(),0,_salario,0
     );
 
 end$$
@@ -727,9 +814,12 @@ create procedure addcliente (
     in _teléfono                varchar(50), 
     in _saldo                   float,
     in _límitecrédito           float,
-    in _personaempresa          bool
+    in _idtipocliente          int
     )
 begin
+if _saldo>_límitecrédito then
+  _saldo=_límitecrédito;
+end if;
 insert into cliente(
      nombrecliente,
      apellidopcliente,
@@ -742,7 +832,7 @@ insert into cliente(
      teléfono, 
      saldo,
      límitecrédito,
-     personaempresa
+     idtipocliente
 ) values (
      _nombrecliente,
      _apellidopcliente,
@@ -755,7 +845,7 @@ insert into cliente(
      _teléfono, 
      _saldo,
      _límitecrédito,
-     _personaempresa
+     _idtipocliente
      );
 end$$
 
@@ -778,7 +868,7 @@ create procedure editarcliente (
     in _teléfono                varchar(50), 
     in _saldo                   float,
     in _límitecrédito           float,
-    in _personaempresa          bool
+    in _idtipocliente          int
     )
 begin
 update cliente set
@@ -793,7 +883,7 @@ update cliente set
      teléfono=_teléfono, 
      saldo=_saldo,
      límitecrédito=_límitecrédito,
-     personaempresa=_personaempresa
+     idtipocliente=_idtipocliente
 where codigocliente=_codigocliente;
 end$$
 
@@ -881,7 +971,7 @@ end$$
 create procedure addproveedor(
     in _nombreproveedor         varchar(50),
     in _telefono                varchar(50),
-    in _alternativo             bool)
+    in _alternativo             int)
 begin
 insert into proveedor(
      nombreproveedor ,
@@ -904,7 +994,7 @@ create procedure editarproveedor(
     in _codigoproveedor             int,
     in _nombreproveedor         varchar(50),
     in _telefono                varchar(50),
-    in _alternativo             bool)
+    in _alternativo             int)
 begin
 update  proveedor set
      nombreproveedor=_nombreproveedor ,
@@ -923,7 +1013,6 @@ begin
 delete from  proveedor 
 where codigoproveedor=_codigoproveedor;
 end$$
-
 
 
 
@@ -998,3 +1087,19 @@ begin
 delete from pedido 
 where codigopedido=_codigopedido;
 end$$
+
+
+create table usuarios(
+	usuario varchar(20) not null,
+    pass varchar(20) not null,
+    primary key (usuario)
+);
+
+insert into usuarios values ('admin','admin');
+    
+delimiter $$
+create procedure login(in _u varchar(20),in _p varchar(20))
+begin 
+	select count(usuario) from usuarios where usuario=_u and pass=_p;
+end 
+$$

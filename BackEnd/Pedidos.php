@@ -13,8 +13,9 @@ class Pedidos extends conec
     }
 
 
-  public function get_pedido(){
-        $result = $this->_db->query('SELECT * FROM pedidovista');
+
+    public function get_pedido(){
+        $result = $this->_db->query("SELECT * FROM pedidovista");
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
@@ -32,6 +33,7 @@ class Pedidos extends conec
 
     public function Cambio($ok){
         $result = $this->_db->query("call editarpedido(".$ok['id'].",".$ok['d1'].",".$ok['d2'].",'".$ok['d3']."','".$ok['d4']."',".$ok['d5'].",".$ok['d6'].")");
+
         return $result;
     }
 

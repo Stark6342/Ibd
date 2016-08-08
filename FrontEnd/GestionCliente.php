@@ -134,8 +134,8 @@
                 <div class="input-field col s12">
                     <select required id="TipoCliente_label">
                         <option value=null disabled selected>Seleccione</option>
-                        <option value="0">Persona</option>
-                        <option value="1">Empresa</option>
+                        <option value="1">Persona</option>
+                        <option value="2">Empresa</option>
                     </select>
                     <label>Tipo de cliente</label>
                 </div>
@@ -319,7 +319,12 @@
             console.log(d10);
             console.log(d11);
             console.log(d12);
-            if(id!=""){
+           
+            if(d11>50000){
+              Materialize.toast('Saldo sobrepasado', 4000,"red");
+            }
+                else{
+ if(id!=""){
                 $.ajax({
                     url:"../BackEnd/Back.php",
                     type:'post',
@@ -411,6 +416,8 @@
 
                 });
             };
+                }
+
         });
     });
 
