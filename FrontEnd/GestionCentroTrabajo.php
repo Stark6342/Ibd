@@ -1,4 +1,10 @@
 ﻿<?php
+session_start();
+if(!isset($_SESSION["Validado"])) {
+    header("location:../");
+}
+else {
+if($_SESSION['Validado']=="aceptado"){
     include "BarNav.php";
     require_once "imports2.php";
     require_once "../BackEnd/CargaSelect.php";
@@ -263,3 +269,4 @@
         });
     });
 </script>
+<?php } } ?>
