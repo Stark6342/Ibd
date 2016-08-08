@@ -22,7 +22,7 @@ if($_SESSION['Validado']=="aceptado"){
         <br>
         <h5 class="center">Gestion de Departamentos</h5>
         <br><hr><br>
-        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">+</i></a>
+        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">add</i></a>
     </div>
 </div>
 

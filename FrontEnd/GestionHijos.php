@@ -97,7 +97,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Fecha de nacimiento" id="FechaNacimiento_label" type="text" class="validate" required>
+                    <input placeholder="Fecha de nacimiento" id="FechaNacimiento_label" type="date" >
                     <label for="FechaNacimiento_label">Fecha de nacimiento</label>
                 </div>
             </div>
@@ -161,8 +161,8 @@
 
 
 <script>
-var idedit="0";;
-    $(document).ready(function() {
+var idedit="0";
+$(document).ready(function() {
         $('select').material_select();
     });
     $('.modal-trigger1').leanModal({

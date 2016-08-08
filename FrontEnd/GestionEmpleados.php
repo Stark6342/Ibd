@@ -22,7 +22,7 @@ if($_SESSION['Validado']=="aceptado"){
         <br>
         <h5 class="center">Gestion de Empleados</h5>
         <br><hr><br>
-        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">+</i></a>
+        <a href="#alta" class="btn-floating btn-large waves-effect waves-light green white-text modal-trigger1 right"><i class="material-icons">add</i></a>
     </div>
 </div>
 
@@ -251,9 +251,9 @@ var idedit="0";;
                Metodo: "GetEmpleados"
            }),
            success: function (data) {
-
+               console.log(data);
                data=JSON.parse(data);
-
+                console.log(data);
                if(data.length!=0){
                    for (var i in data){
                      //console.log("data");
@@ -277,17 +277,13 @@ var idedit="0";;
 
  //funcion para anadir departamento
     $(function () {
-
-
         $('#AnadirDepartamento').click(function () {
             event.preventDefault();
             var id = $('#idAgregarDepartamento').val();
             var iddepa=$('#Departamento_label').val();
             console.log(id);
-                        console.log(iddepa);
-
+            console.log(iddepa);
             $.ajax({
-
                 url:"../BackEnd/Back.php",
                 type:'post',
                 data:({

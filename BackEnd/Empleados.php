@@ -19,11 +19,6 @@ class Empleados extends conec
         return $art;
     }
 
-
-
-
-
-
     public function Get_empleado_por_ID($id){
         $result = $this->_db->query("SELECT * FROM empleadosvista where codigoempleado=".$id.";");
         $art = $result->fetch_all(MYSQLI_ASSOC);
