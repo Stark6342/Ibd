@@ -195,6 +195,7 @@
         $('#alta').openModal();
         $('#idCambio').attr("value",clicked_id);
         $('#idCambio').val(clicked_id);
+        console.log(clicked_id);
         $.ajax({
             url:"../BackEnd/Back.php",
             type:'post',
@@ -249,7 +250,7 @@
                     $('#Tabla').empty();
                     var table = $('<table class="responsive-table striped"> <thead> <tr> <th>Codigo</th> <th>Nombre</th> <th>Apellidos</th> <th>Sexo</th> <th>Poblacion</th> <th>Direccion</th> <th>Telefono</th> <th>Saldo</th> <th>Tipo de cliente</th><th>Acciones</th> </tr></thead></table>');
                     for(i=0; i<data.length; i++){
-                        table.append('<tr><td>'+data[i].codcliete+'</td><td>'+data[i].nombrecliente+'</td><td>'+data[i].apellidos+'</td><td>'+data[i].sexo+'</td><td>'+data[i].poblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].telefono+'</td><td>'+data[i].saldo+'</td><td>'+data[i].empresa+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].CodCliete+'" class="small material-icons btn red">delete</a><a id="'+data[i].codcliete+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
+                        table.append('<tr><td>'+data[i].codcliete+'</td><td>'+data[i].nombrecliente+'</td><td>'+data[i].apellidos+'</td><td>'+data[i].sexo+'</td><td>'+data[i].poblacion+'</td><td>'+data[i].direccion+'</td><td>'+data[i].telefono+'</td><td>'+data[i].saldo+'</td><td>'+data[i].empresa+'</td><td width="200"><a onclick="elementos(this.id)" id="'+data[i].codcliete+'" class="small material-icons btn red">delete</a><a id="'+data[i].codcliete+'" onclick="elementos2(this.id)" class="small material-icons btn yellow">mode_edit</a></td></tr>');
                     }
                     $('#Tabla').append(table);
                 }

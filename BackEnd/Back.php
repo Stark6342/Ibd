@@ -15,6 +15,7 @@ require_once "Hijos.php";
 require_once "Proveedores.php";
 require_once "Direccion.php";
 require_once "Respaldo.php";
+require_once "Habilidad.php";
 
 
 switch ($_POST['action']){
@@ -366,6 +367,31 @@ case "Direcciones":
                 unset($res);
                 break;
     
+
+        }
+        break;
+
+        case "Habilidades":
+        switch ($_POST['Metodo']){
+            case "GetHabilidades":
+                $hab = new Habilidad();
+                $ok=json_encode($hab->get_habilidad());
+                echo $ok;
+                unset($hab);
+                break;
+            case "Alta":
+                $hab=new Habilidad();
+                $ok=$hab->Alta($_POST['atributos']);
+                echo $ok;
+                unset($hab);
+                break;
+            case "Baja":
+                $hab=new Habilidad();
+                $ok=$hab->Baja($_POST['id']);
+                echo $ok;
+                unset($hab);
+                break;
+
 
         }
         break;

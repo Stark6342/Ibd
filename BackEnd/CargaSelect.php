@@ -63,7 +63,9 @@ class CargaSelect extends conec
         $art = $result->fetch_all(MYSQLI_ASSOC);
         return $art;
     }
- 
-
-
+     public function get_habilidad(){
+        $result = $this->_db->query('SELECT * FROM habilidad');
+        $art = $result->fetch_all(MYSQLI_ASSOC);
+        return $art;
+    }
 }

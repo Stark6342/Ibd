@@ -245,7 +245,7 @@ var idedit="0";;
             var ciud=$('#Poblacion_label').val();
             var num=$('#NumeroExterior_label').val();
             var Cli=$('#Cliente_label').val();
-            if(id!="0"){
+            if(id!=""){
                 $.ajax({
                 url:"../BackEnd/Back.php",
                 type:'post',

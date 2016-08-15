@@ -18,6 +18,7 @@ require_once "imports2.php";
             <li><a href="GestionDirecciones.php">Direcciones</a></li>
             <li><a href="GestionDepartamento.php">Departamentos</a></li>
             <li><a href="GestionEmpleados.php">Empleados</a></li>
+            <li><a href="GestionHabilidad.php">Hablilidades</a>
             <li><a href="GestionHijos.php">Hijos</a></li>
             <li><a href="GestionPedidos.php">Pedidos</a></li>
             <li><a href="GestionProveedores.php">Proveedores</a></li>
